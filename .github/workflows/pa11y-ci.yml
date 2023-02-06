@@ -1,6 +1,6 @@
 name: pa11y tests
 
-on: 
+on:
   workflow_call:
 
 permissions:
@@ -17,21 +17,16 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - name: Remove .npmrc
-        uses: JesseTG/rm@v1.0.3
-        with:
-          path: .npmrc
-
       - uses: actions/setup-node@v3
         with:
           node-version: 18
           registry-url: https://npm.pkg.github.com/
           scope: '@thepolicylab-projectportals'
 
-      - run: yarn install --frozen-lockfile
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+      - run: |
+          yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
+          yarn install --immutable
+
       - run: yarn build
 
       - name: Start up app
