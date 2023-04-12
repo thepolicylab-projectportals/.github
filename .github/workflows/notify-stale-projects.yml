@@ -1,0 +1,52 @@
+name: Get email body for stale projects
+description: HTML containing body for email
+
+on:
+  workflow_call:
+
+inputs:
+  to:
+    description: Recipient email addressed (separate with comma)
+    required: true
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout source
+      uses: actions/checkout@v3
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        registry-url: https://npm.pkg.github.com/
+        scope: '@thepolicylab-projectportals'
+
+    - uses: octokit/graphql-action@v2.x
+      id: get_projects
+      with:
+        query: |
+          query findproject {
+            allProject {
+              nodes {
+                endDate
+                mainContact {
+                  email
+                  name
+                }
+                opportunityCloses
+                slug
+                startDate
+                status
+                title
+                lastModified
+              }
+            }
+          }
+        owner: ${{ github.event.repository.owner.name }}
+        repo: ${{ github.event.repository.name }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: "echo 'found project: ${{ steps.get_project.outputs.data }}'"
+    - run: ./.github/scripts/get-stale-projects.js
+      env:
+        query: ${{ fromJSON(steps.get_project.outputs.data) }}
