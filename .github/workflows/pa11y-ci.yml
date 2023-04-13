@@ -8,29 +8,19 @@ permissions:
   packages: read
   pull-requests: write
 
+inputs:
+  site-url:
+    required: true
+
 jobs:
   build:
     name: Building site and running pa11y-ci tests
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-
-      - name: Remove .npmrc
-        uses: JesseTG/rm@v1.0.3
-        with:
-          path: .npmrc
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          registry-url: https://npm.pkg.github.com/
-          scope: '@thepolicylab-projectportals'
-
       - run: npm install -g pa11y-ci
 
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
@@ -58,12 +48,13 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          header: "pa11y report"
+          header: "`pa11y report: ${{ inputs.site-url }}`"
           message:
             "<p><small>Note: This comment gets updated with every commit</small></p>
             <details>
             <summary>
             <p>Git SHA: <code>${{ github.event.pull_request.head.sha }}</code></p>
+            <p>Site: <code>${{ inputs.site-url }}</code></p>
             <h3>Pa11y test status: <strong>FAIL</strong></h3>
             </summary>
             <pre><code>
@@ -76,12 +67,13 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          header: "pa11y report"
+          header: "`pa11y report: ${{ inputs.site-url }}`"
           message:
             "<p><small>Note: This comment gets updated with every commit</small></p>
             <details>
             <summary>
             <p>Git SHA: <code>${{ github.event.pull_request.head.sha }}</code></p>
+            <p>Site: <code>${{ inputs.site-url }}</code></p>
             <h3>Pa11y test status: <strong>PASS</strong></h3>
             </summary>
             <pre><code>
