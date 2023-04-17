@@ -21,8 +21,6 @@ jobs:
 
       - run: npm install -g pa11y-ci
 
-      - run: yarn build
-
       - name: Start up app
         run: yarn serve & npx wait-on http://localhost:9000
 
