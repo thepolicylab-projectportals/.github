@@ -63,6 +63,6 @@ jobs:
         # email body as text
         body: ${{ env.body }}
         # comma-separated string, send email to
-        to: ${{ env.to }}
+        to: ${{ inputs.to }}
         # from email name
         from: Your Friendly Neighborhood Spider-man
