@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 inputs:
-  site-name:
+  site-url:
     required: true
 
 jobs:
@@ -48,13 +48,13 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          header: "`pa11y report: ${{ inputs.site-name }}`"
+          header: "`pa11y report: ${{ inputs.site-url }}`"
           message:
             "<p><small>Note: This comment gets updated with every commit</small></p>
             <details>
             <summary>
             <p>Git SHA: <code>${{ github.event.pull_request.head.sha }}</code></p>
-            <p>Site: <code>${{ inputs.site-name }}</code></p>
+            <p>Site: <code>${{ inputs.site-url }}</code></p>
             <h3>Pa11y test status: <strong>FAIL</strong></h3>
             </summary>
             <pre><code>
@@ -67,13 +67,13 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          header: "`pa11y report: ${{ inputs.site-name }}`"
+          header: "`pa11y report: ${{ inputs.site-url }}`"
           message:
             "<p><small>Note: This comment gets updated with every commit</small></p>
             <details>
             <summary>
             <p>Git SHA: <code>${{ github.event.pull_request.head.sha }}</code></p>
-            <p>Site: <code>${{ inputs.site-name }}</code></p>
+            <p>Site: <code>${{ inputs.site-url }}</code></p>
             <h3>Pa11y test status: <strong>PASS</strong></h3>
             </summary>
             <pre><code>
