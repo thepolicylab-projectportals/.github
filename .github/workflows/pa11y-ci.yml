@@ -4,7 +4,6 @@ on:
   workflow_call:
     inputs:
       site-name:
-        required: true
         type: string
         default: "default-site"
 
