@@ -6,6 +6,9 @@ on:
       site-name:
         type: string
         default: "default-site"
+      yarn-command:
+        type: string
+        default: "yarn"
 
 permissions:
   contents: read
@@ -18,8 +21,22 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
 
-      - run: npm install -g pa11y-ci
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://npm.pkg.github.com/
+          scope: '@thepolicylab-projectportals'
+
+      - run: yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
+          
+      - run: yarn install --immutable
+
+      - run: ${{ inputs.yarn-command }} build
+
+      - run: yarn global add pa11y-ci
 
       - name: Start up app
         run: yarn serve & npx wait-on http://localhost:9000
