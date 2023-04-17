@@ -38,7 +38,7 @@ jobs:
         run: yarn serve & npx wait-on http://localhost:9000
 
       - name: Run pa11y-ci
-        run: npm exec -c 'pa11y-ci -s http://localhost:9000/sitemap-0.xml'
+        run: npm exec -c 'pa11y-ci -s http://localhost:9000/sitemap/sitemap-0.xml'
 
       - name: Prettify result file
         if: ${{ always() }}
