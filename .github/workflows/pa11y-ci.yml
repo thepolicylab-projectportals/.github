@@ -28,8 +28,6 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@thepolicylab-projectportals'
 
-      - run: npm install -g pa11y-ci
-
       - run: yarn install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
