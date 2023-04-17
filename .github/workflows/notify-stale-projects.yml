@@ -20,33 +20,49 @@ jobs:
         node-version: 18
         registry-url: https://npm.pkg.github.com/
         scope: '@thepolicylab-projectportals'
-
-    - uses: octokit/graphql-action@v2.x
-      id: get_projects
-      with:
-        query: |
-          query findproject {
-            allProject {
-              nodes {
-                endDate
-                mainContact {
-                  email
-                  name
-                }
-                opportunityCloses
-                slug
-                startDate
-                status
-                title
-                lastModified
-              }
-            }
+    - run: '''curl 'http://localhost:8003/___graphql' \
+          -X POST \
+          -H 'content-type: application/json' \
+          --data '{
+          "query": "{ allProject { 
+          nodes { 
+          id
+          endDate
+          mainContact {
+            email
+            name
           }
-        owner: ${{ github.event.repository.owner.name }}
-        repo: ${{ github.event.repository.name }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: "echo 'found project: ${{ steps.get_project.outputs.data }}'"
-    - run: ./.github/scripts/get-stale-projects.js
-      env:
-        query: ${{ fromJSON(steps.get_project.outputs.data) }}
+          opportunityCloses
+          slug
+          startDate
+          status
+          title
+          lastModified
+          } } }"
+        }' --verbose'''
+      id: get_projects
+    - run: "echo 'found project: ${{ steps.get_projects.outputs.data }}'"
+    - name: Email Body
+      id: get_body
+      run: |
+        body=$(node ./.github/scripts/get-stale-projects.js)
+        echo "body=$body" >> $GITHUB_ENV
+      with:
+        query: ${{ fromJSON(steps.get_projects.outputs.data) }}
+    - name: Send notification email to Heather
+      uses: dawidd6/action-send-mail@v2
+      with:
+        # mail server settings
+        server_address: smtp.gmail.com
+        server_port: 465
+        # user credentials
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        # email subject
+        subject: Conda install failure for ${{ github.repository }}
+        # email body as text
+        body: ${{ env.body }}
+        # comma-separated string, send email to
+        to: ${{ env.to }}
+        # from email name
+        from: Your Friendly Neighborhood Spider-man
