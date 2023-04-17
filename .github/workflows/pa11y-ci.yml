@@ -18,18 +18,8 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          registry-url: https://npm.pkg.github.com/
-          scope: '@thepolicylab-projectportals'
-
-      - run: |
-          yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
-          yarn install --immutable
+      
+      - run: npm install -g pa11y-ci
 
       - run: yarn build
 
