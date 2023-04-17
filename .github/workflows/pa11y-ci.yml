@@ -5,7 +5,6 @@ on:
     inputs:
       site-name:
         required: true
-        type: string
 
 permissions:
   contents: read
