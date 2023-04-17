@@ -2,6 +2,10 @@ name: pa11y tests
 
 on:
   workflow_call:
+    input:
+      site-name:
+        required: true
+        default: "default-site"
 
 permissions:
   contents: read
@@ -51,7 +55,7 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          header: "pa11y report"
+          header: "pa11y report: ${{ inputs.site-name }} "
           message:
             "<p><small>Note: This comment gets updated with every commit</small></p>
             <details>
@@ -69,7 +73,7 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          header: "pa11y report"
+          header: "pa11y report: ${{ inputs.site-name }}"
           message:
             "<p><small>Note: This comment gets updated with every commit</small></p>
             <details>
