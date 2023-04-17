@@ -2,16 +2,15 @@ name: pa11y tests
 
 on: 
   workflow_call:
-    inputs:
-      site-name:
-        required: true
 
 permissions:
   contents: read
   packages: read
   pull-requests: write
 
-
+inputs:
+  site-name:
+    required: true
 
 jobs:
   build:
