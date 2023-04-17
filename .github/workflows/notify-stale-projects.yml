@@ -20,26 +20,13 @@ jobs:
         node-version: 18
         registry-url: https://npm.pkg.github.com/
         scope: '@thepolicylab-projectportals'
-    - run: '''curl 'http://localhost:8003/___graphql' \
-          -X POST \
-          -H 'content-type: application/json' \
-          --data '{
-          "query": "{ allProject { 
-          nodes { 
-          id
-          endDate
-          mainContact {
-            email
-            name
-          }
-          opportunityCloses
-          slug
-          startDate
-          status
-          title
-          lastModified
-          } } }"
-        }' --verbose'''
+    - run: |
+        curl 'http://localhost:8003/___graphql' \
+        -X POST \
+        -H 'content-type: application/json' \
+        --data '{
+        "query": "{ allProject { nodes { id } } }"
+        }' --verbose
       id: get_projects
     - run: "echo 'found project: ${{ steps.get_projects.outputs.data }}'"
     - name: Email Body
