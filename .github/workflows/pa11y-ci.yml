@@ -34,7 +34,7 @@ jobs:
 
       - run: yarn install --immutable
 
-      - run: yarn global add pa11y-ci
+      - run: yarn add pa11y-ci
 
       - run: ${{ inputs.yarn-command }} build
 
