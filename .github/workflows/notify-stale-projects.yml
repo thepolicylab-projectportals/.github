@@ -6,7 +6,6 @@ on:
 
 inputs:
   to:
-    description: Recipient email addressed (separate with comma)
     type: string
     default: "heather_yu@brown.edu"
 
