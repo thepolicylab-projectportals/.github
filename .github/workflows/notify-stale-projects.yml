@@ -1,5 +1,4 @@
 name: Get email body for stale projects
-description: HTML containing body for email
 
 on:
   pull_request:
@@ -11,7 +10,7 @@ permissions:
   contents: read
   packages: read
   pull-requests: write
-  
+
 jobs:
   build:
     runs-on: ubuntu-20.04
@@ -49,10 +48,8 @@ jobs:
       - name: Email Body
         id: get_body
         run: |
-          body=$(node ./.github/scripts/get-stale-projects.js)
+          body=$(node ./.github/scripts/get-stale-projects.js ${{ fromJSON(steps.get_projects.outputs.data) }})
           echo "body=$body" >> $GITHUB_ENV
-        with:
-          query: ${{ fromJSON(steps.get_projects.outputs.data) }}
       - name: Send notification email to Heather
         uses: dawidd6/action-send-mail@v2
         with:
