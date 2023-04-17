@@ -1,11 +1,12 @@
 name: Get email body for stale projects
 
 on:
-  pull_request:
+  workflow_call:
     inputs:
       to:
         type: string
         default: "heather_yu@brown.edu"
+
 permissions:
   contents: read
   packages: read
