@@ -2,7 +2,7 @@ name: pa11y tests
 
 on:
   workflow_call:
-    input:
+    inputs:
       site-name:
         required: true
         default: "default-site"
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      
+
       - run: npm install -g pa11y-ci
 
       - run: yarn build
