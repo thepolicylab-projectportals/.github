@@ -2,7 +2,7 @@ name: Get email body for stale projects
 description: HTML containing body for email
 
 on:
-  workflow_call:
+  pull_request:
 
 inputs:
   to:
