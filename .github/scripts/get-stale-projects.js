@@ -2,7 +2,8 @@ const core = require("@actions/core");
 
 async function main() {
     try {
-        const query = process.argv[0];
+        const arg = process.argv.slice(2);
+        const query = arg[0];
         const today = new Date();
         const greetingDiv = document.createElement("div");
         const projectDiv =  document.createElement("div");
