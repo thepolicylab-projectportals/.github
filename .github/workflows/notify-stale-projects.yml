@@ -34,7 +34,6 @@ jobs:
 
       - name: Start up app
         run: yarn serve & npx wait-on http://localhost:9000
-
       - run: |
             curl 'http://localhost:9000/___graphql' \
             -X POST \
