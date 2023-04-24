@@ -38,10 +38,10 @@ jobs:
             -X POST \
             -H 'content-type: application/json' \
             --data '{"query": "query { allProject { nodes { id } } }"}' \
-            --verbose >> $GITHUB_OUTPUT
+            --verbose >> out.txt
         id: get_projects
         
-      - run: "echo 'found project: ${{ steps.get_projects.outputs.* }}'"
+      - run: cat out.txt
       
       - name: Email Body
         id: get_body
