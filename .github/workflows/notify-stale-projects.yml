@@ -36,14 +36,14 @@ jobs:
         run: yarn serve & npx wait-on http://localhost:9000
 
       - run: |
-          curl 'http://localhost:9000/___graphql' \
-          -X POST \
-          -H 'content-type: application/json' \
-          --data '{
-          "query": "{ allProject { nodes { id } } }"
-          }' --verbose
+            curl 'http://localhost:9000/___graphql' \
+            -X POST \
+            -H 'content-type: application/json' \
+            --data '{
+            "query": "query { allProject { nodes { id } } }"
+          }' --verbose >> $GITHUB_OUTPUT
         id: get_projects
-      - run: "echo 'found project: ${{ steps.get_projects.outputs.data }}'"
+      - run: "echo 'found project: ${{ steps.get_projects.outputs.* }}'"
       - name: Email Body
         id: get_body
         run: |
@@ -61,7 +61,7 @@ jobs:
           # email subject
           subject: Conda install failure for ${{ github.repository }}
           # email body as text
-          body: ${{ env.body }}
+          body: ${{ steps.get_body.outputs.body }}
           # comma-separated string, send email to
           to: ${{ inputs.to }}
           # from email name
