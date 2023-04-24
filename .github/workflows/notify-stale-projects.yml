@@ -30,23 +30,25 @@ jobs:
 
       - run: yarn install --immutable
 
-      - run: yarn build
-
       - name: Start up app
-        run: yarn serve & npx wait-on http://localhost:9000
+        run: yarn develop & npx wait-on http://localhost:8000
+        
       - run: |
-            curl 'http://localhost:9000/___graphql' \
+            curl 'http://localhost:8000/___graphql' \
             -X POST \
             -H 'content-type: application/json' \
             --data '{"query": "query { allProject { nodes { id } } }"}' \
             --verbose >> $GITHUB_OUTPUT
         id: get_projects
+        
       - run: "echo 'found project: ${{ steps.get_projects.outputs.* }}'"
+      
       - name: Email Body
         id: get_body
         run: |
           body=$(node ./.github/scripts/get-stale-projects.js ${{ fromJSON(steps.get_projects.outputs.data) }})
           echo "body=$body" >> $GITHUB_ENV
+          
       - name: Send notification email to Heather
         uses: dawidd6/action-send-mail@v2
         with:
