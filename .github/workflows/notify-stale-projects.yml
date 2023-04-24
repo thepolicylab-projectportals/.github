@@ -38,9 +38,8 @@ jobs:
             curl 'http://localhost:9000/___graphql' \
             -X POST \
             -H 'content-type: application/json' \
-            --data '{
-            "query": "query { allProject { nodes { id } } }"
-          }' --verbose >> $GITHUB_OUTPUT
+            --data '{"query": "query { allProject { nodes { id } } }"}' \
+            --verbose >> $GITHUB_OUTPUT
         id: get_projects
       - run: "echo 'found project: ${{ steps.get_projects.outputs.* }}'"
       - name: Email Body
