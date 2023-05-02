@@ -1,9 +1,14 @@
 const core = require("@actions/core");
+const { argv } = require("node:process");
+const fs = require('fs');
 
 async function main() {
+    let query;
+    const arg = argv.slice(2);
+    const file = arg[0];
+    query = JSON.parse(fs.readFileSync(file, {encoding:'utf8', flag:'r'}));
     try {
-        const arg = process.argv.slice(2);
-        const query = arg[0];
+        // TODO: https://github.com/jsdom/jsdom
         const today = new Date();
         const greetingDiv = document.createElement("div");
         const projectDiv =  document.createElement("div");
@@ -17,6 +22,9 @@ async function main() {
             let startDate = Date.parse(query.data.allProject.nodes[i].startDate);
             let endDate = Date.parse(query.data.allProject.nodes[i].endDate);
             let modifyDate = Date.parse(query.data.allProject.nodes[i].lastModified);
+            console.log(`Status: ${status}
+            closeDate: ${closeDate}`);
+
             let problems = [];
 
             switch (status) {

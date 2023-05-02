@@ -38,17 +38,15 @@ jobs:
             curl 'http://localhost:8000/___graphql' \
             -X POST \
             -H 'content-type: application/json' \
-            --data '{"query": "query { allProject { nodes { id } } }"}' \
-            --verbose >> out.txt
+            --data '{"query": "query { allProject { nodes { id, title, slug, status, opportunityCloses, endDate, startDate, lastModified, mainContact { name, email }  } } }"}' \
+            --verbose >> query.txt
         id: get_projects
         
-      - run: cat out.txt
+      - run: cat query.txt
       
       - name: Email Body
         id: get_body
-        run: |
-          body=$(node ./.github/scripts/get-stale-projects.js ${{ fromJSON(steps.get_projects.outputs.data) }})
-          echo "body=$body" >> $GITHUB_ENV
+        run: node ./.github/scripts/get-stale-projects.js query.txt
           
       - name: Send notification email to Heather
         uses: dawidd6/action-send-mail@v2
