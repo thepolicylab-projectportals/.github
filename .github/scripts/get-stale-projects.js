@@ -1,14 +1,16 @@
 const core = require("@actions/core");
 const { argv } = require("node:process");
 const fs = require('fs');
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
+
 
 async function main() {
-    let query;
+    const { document } = (new JSDOM(`...`)).window;
     const arg = argv.slice(2);
     const file = arg[0];
-    query = JSON.parse(fs.readFileSync(file, {encoding:'utf8', flag:'r'}));
+    let query = JSON.parse(fs.readFileSync(file, {encoding:'utf8', flag:'r'}));
     try {
-        // TODO: https://github.com/jsdom/jsdom
         const today = new Date();
         const greetingDiv = document.createElement("div");
         const projectDiv =  document.createElement("div");
