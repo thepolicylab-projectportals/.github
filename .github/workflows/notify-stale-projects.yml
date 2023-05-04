@@ -46,9 +46,7 @@ jobs:
       
       - name: Email Body
         id: get_body
-        run: node ./.github/scripts/get-stale-projects.js query.txt > body.txt
-
-      - run: cat body.txt
+        run: node ./.github/scripts/get-stale-projects.js query.txt
           
       - name: Send notification email
         uses: dawidd6/action-send-mail@v2
@@ -61,8 +59,8 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           # email subject
           subject: Conda install failure for ${{ github.repository }}
-          # email body as html within file
-          body: body.txt
+          # email body as text
+          body: ${{ steps.get_body.outputs.body }}
           # comma-separated string, send email to
           to: ${{ inputs.to }}
           # from email name
