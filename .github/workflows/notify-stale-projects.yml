@@ -46,7 +46,7 @@ jobs:
       
       - name: Email Body
         id: get_body
-        run: node ./.github/scripts/get-stale-projects.js query.txt
+        run: node thepolicylab-projectportals/.github/.github/scripts/get-stale-projects.js query.txt
           
       - name: Send notification email
         uses: dawidd6/action-send-mail@v2
