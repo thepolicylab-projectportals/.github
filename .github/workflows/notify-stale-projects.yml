@@ -49,7 +49,7 @@ jobs:
           curl --header "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             --header 'Accept: application/vnd.github.raw' \
             --remote-name \
-            --location https://raw.githubusercontent.com/thepolicylab-projectportals/.github/feat-notification-stale-projects/.github/scripts/get-stale-projects.js \
+            --location https://raw.githubusercontent.com/thepolicylab-projectportals/.github/tree/feat-notification-stale-projects/.github/scripts/get-stale-projects.js \
             chmod +x get-stale-projects.js
 
       - name: Email Body
