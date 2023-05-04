@@ -39,16 +39,18 @@ jobs:
             -X POST \
             -H 'content-type: application/json' \
             --data '{"query": "query { allProject { nodes { id, title, slug, status, opportunityCloses, endDate, startDate, lastModified, mainContact { name, email }  } } }"}' \
-            --verbose >> query.txt
+            --verbose > query.txt
         id: get_projects
         
       - run: cat query.txt
       
       - name: Email Body
         id: get_body
-        run: node ./.github/scripts/get-stale-projects.js query.txt
+        run: node ./.github/scripts/get-stale-projects.js query.txt > body.txt
+
+      - run: cat body.txt
           
-      - name: Send notification email to Heather
+      - name: Send notification email
         uses: dawidd6/action-send-mail@v2
         with:
           # mail server settings
@@ -59,8 +61,8 @@ jobs:
           password: ${{ secrets.EMAIL_PASSWORD }}
           # email subject
           subject: Conda install failure for ${{ github.repository }}
-          # email body as text
-          body: ${{ steps.get_body.outputs.body }}
+          # email body as html within file
+          body: body.txt
           # comma-separated string, send email to
           to: ${{ inputs.to }}
           # from email name
