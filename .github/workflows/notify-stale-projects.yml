@@ -46,8 +46,9 @@ jobs:
 
       - name: Checkout .Github
         uses: actions/checkout@v3
-        with: thepolicylab-projectportals/.github
-        token: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          repository: thepolicylab-projectportals/.github
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Email Body
         id: get_body
