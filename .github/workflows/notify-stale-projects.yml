@@ -63,11 +63,12 @@ jobs:
         with:
           repository: thepolicylab-projectportals/.github
           ref: feat-notification-stale-projects
+          path: github-email
           token: ${{ secrets.TEST_GITHUB_PAT }}
 
       - name: Email Body
         id: get_body
-        run: node ./thepolicylab-projectportals/.github/feat-notification-stale-projects/.github/scripts/get-stale-projects.js query.txt
+        run: node github-email/.github/scripts/get-stale-projects.js query.txt
 
       - name: Send notification email
         uses: dawidd6/action-send-mail@v2
