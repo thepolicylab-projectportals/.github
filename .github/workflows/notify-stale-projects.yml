@@ -49,7 +49,7 @@ jobs:
         with:
           repository: thepolicylab-projectportals/.github
           ref: feat-notification-stale-projects
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.TEST_GITHUB_PAT }}
 
       - name: Email Body
         id: get_body
