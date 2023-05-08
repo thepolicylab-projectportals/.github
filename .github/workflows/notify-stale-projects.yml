@@ -59,6 +59,7 @@ jobs:
       - run: cat query.txt
 
       - name: Checkout .Github
+        id: github
         uses: actions/checkout@v3
         with:
           repository: thepolicylab-projectportals/.github
@@ -68,7 +69,7 @@ jobs:
 
       - name: Email Body
         id: get_body
-        run: node github-email/.github/scripts/get-stale-projects.js query.txt
+        run: node ${{ steps.github.outputs.checkout-path }}/.github/scripts/get-stale-projects.js query.txt
 
       - name: Send notification email
         uses: dawidd6/action-send-mail@v2
