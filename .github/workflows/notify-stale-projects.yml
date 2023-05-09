@@ -67,9 +67,14 @@ jobs:
           path: github-email
           token: ${{ secrets.TEST_GITHUB_PAT }}
 
+      - run: |
+            cd ..
+            cd github-email
+            yarn install --immutable
+
       - name: Email Body
         id: get_body
-        run: node ./github-email/.github/scripts/get-stale-projects.js query.txt
+        run: node .github/scripts/get-stale-projects.js query.txt
 
       - name: Send notification email
         uses: dawidd6/action-send-mail@v2
