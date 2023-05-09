@@ -3,10 +3,10 @@ const { argv } = require("node:process");
 const fs = require('fs');
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
-
+const { document } = (new JSDOM(`...`)).window;
 
 async function main() {
-    const { document } = (new JSDOM(`...`)).window;
+
     const arg = argv.slice(2);
     const file = arg[0];
     let query = JSON.parse(fs.readFileSync(file, {encoding:'utf8', flag:'r'}));
