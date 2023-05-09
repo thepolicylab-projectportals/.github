@@ -27,9 +27,7 @@ jobs:
           scope: '@thepolicylab-projectportals'
           cache: 'yarn'
 
-      - run: |
-          mkdir .cache
-          yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
+      - run: yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
 
       - id: get-cache
         uses: actions/cache/restore@v3
@@ -75,7 +73,7 @@ jobs:
 
       - name: Email Body
         id: get_body
-        run: node .github/scripts/get-stale-projects.js query.txt
+        run: node ./github-email/.github/scripts/get-stale-projects.js query.txt
 
       - name: Send notification email
         uses: dawidd6/action-send-mail@v2
