@@ -27,7 +27,9 @@ jobs:
           scope: '@thepolicylab-projectportals'
           cache: 'yarn'
 
-      - run: yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
+      - run: |
+          mkdir .cache
+          yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
 
       - id: get-cache
         uses: actions/cache/restore@v3
