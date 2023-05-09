@@ -69,7 +69,7 @@ jobs:
 
       - run: |
             cd github-email
-            yarn install --immutable
+            npm install
 
       - name: Email Body
         id: get_body
