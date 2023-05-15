@@ -74,12 +74,6 @@ jobs:
         id: get_body
         run: node ./github-email/.github/scripts/get-stale-projects.js query.txt
 
-      - name: Create file for body of email
-        run: ${ body } > body.txt
-
-      - name: Check Body of Email
-        run: cat body.txt
-
       - name: Send notification email
         uses: dawidd6/action-send-mail@v2
         with:
@@ -92,7 +86,7 @@ jobs:
           # email subject
           subject: Notification for ${{ github.repository }}
           # email body as text
-          body: body.txt
+          body: $body
           # comma-separated string, send email to
           to: ${{ inputs.to }}
           # from email name
