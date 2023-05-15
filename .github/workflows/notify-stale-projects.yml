@@ -75,7 +75,7 @@ jobs:
         run: node ./github-email/.github/scripts/get-stale-projects.js query.txt
 
       - name: Create file for body of email
-        run: $body > body.txt
+        run: ${ body } > body.txt
 
       - name: Check Body of Email
         run: cat body.txt
