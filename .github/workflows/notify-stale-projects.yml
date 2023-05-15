@@ -35,7 +35,7 @@ jobs:
           path: .cache
           key: ${{ runner.os }}-primes
 
-      - if: steps.get_cache.outputs.cache-hit != 'true'
+      - if: steps.get-cache.outputs.cache-hit != 'true'
         run: yarn install --immutable
 
       - name: Cache yarn install
@@ -75,11 +75,11 @@ jobs:
         id: get_body
         run: node ./github-email/.github/scripts/get-stale-projects.js query.txt
 
-      - name: Body of Email
-        run: |
-          echo "$steps.get_body.outputs.body or $body"
-          $body > body.txt
-          cat body.txt
+      - name: Create file for body of email
+        run: $body > body.txt
+
+      - name: Check Body of Email
+        run: cat body.txt
 
       - name: Send notification email
         uses: dawidd6/action-send-mail@v2
