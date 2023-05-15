@@ -35,8 +35,7 @@ jobs:
           path: .cache
           key: ${{ runner.os }}-primes
 
-      - if: steps.get-cache.outputs.cache-hit != 'true'
-        run: yarn install --immutable
+      - run: yarn install --immutable
 
       - name: Cache yarn install
         id: save-cache
