@@ -1,3 +1,4 @@
+const { argv } = require("node:process");
 const core = require("@actions/core");
 const nodemailer = require("nodemailer");
 const fs = require('fs');
@@ -7,7 +8,9 @@ const { document } = (new JSDOM(`...`)).window;
 
 async function main() {
     const to = core.getInput('to', {required: false});
-    const file = core.getInput('query', {required: true});
+    //console.log(to);
+    const arg = argv.slice(2);
+    const file = arg[0];
     const query = JSON.parse(fs.readFileSync(file, {encoding:'utf8', flag:'r'}));
     console.log(query);
 

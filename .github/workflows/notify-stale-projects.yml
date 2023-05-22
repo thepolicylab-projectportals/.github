@@ -6,8 +6,6 @@ on:
       to:
         type: string
         default: "heather_yu@brown.edu"
-      query:
-        required: true
 
 permissions:
   contents: read
@@ -22,9 +20,55 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
 
-      - run: npm install
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://npm.pkg.github.com/
+          scope: '@thepolicylab-projectportals'
+          cache: 'yarn'
 
-      - name: Email Stale Projects
-        runs:
-          using: 'node12'
-          main: './github-email/.github/scripts/get-stale-projects.js'
+      - run: yarn config set 'npmRegistries["//npm.pkg.github.com"].npmAuthToken' "${{ secrets.GITHUB_TOKEN }}"
+
+      - id: get-cache
+        uses: actions/cache/restore@v3
+        with:
+          path: .cache
+          key: ${{ runner.os }}-primes
+
+      - run: yarn install --immutable
+
+      - name: Cache yarn install
+        id: save-cache
+        uses: actions/cache/save@v3
+        with:
+          path: .cache
+          key: ${{ steps.get-cache.outputs.cache-primary-key }}
+
+      - name: Start up app
+        run: yarn develop & npx wait-on http://localhost:8000
+
+      - run: |
+            curl 'http://localhost:8000/___graphql' \
+            -X POST \
+            -H 'content-type: application/json' \
+            --data '{"query": "query { allProject { nodes { id, title, slug, status, opportunityCloses, endDate, startDate, lastModified, mainContact { name, email }  } } }"}' \
+            --verbose > query.txt
+        id: get_projects
+
+      - run: cat query.txt
+
+      - name: Checkout .Github
+        id: github
+        uses: actions/checkout@v3
+        with:
+          repository: thepolicylab-projectportals/.github
+          ref: feat-notification-stale-projects
+          path: github-email
+          token: ${{ secrets.TEST_GITHUB_PAT }}
+
+      - run: |
+            cd github-email
+            npm install
+
+      - name: Email
+        run: node ./github-email/.github/scripts/get-stale-projects.js query.txt
