@@ -7,8 +7,12 @@ const { JSDOM } = jsdom;
 const { document } = (new JSDOM(`...`)).window;
 
 async function main() {
-    const to = core.getInput('to', {required: false});
-    //console.log(to);
+    let to = core.getInput('to', {required: false});
+    console.log(to);
+    if (!to) {
+        core.warning('to value was not set');
+        to = "heather_yu@brown.edu";
+    }
     const arg = argv.slice(2);
     const file = arg[0];
     const query = JSON.parse(fs.readFileSync(file, {encoding:'utf8', flag:'r'}));
@@ -112,7 +116,7 @@ async function main() {
 
 
     } catch (error) {
-        core.setFailed(`Action failed with error ${error}`);
+        core.setFailed(`Action failed with the following error: ${error}`);
     }
 }
 
