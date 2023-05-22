@@ -103,7 +103,7 @@ async function main() {
                 from: '"Fred Foo 👻" <foo@example.com>', // sender address
                 to: to, // list of receivers
                 subject: "Hello ✔", // Subject line
-                html: document, // html body
+                html: greetingDiv, // html body
             });
 
             console.log("Message sent: %s", info.messageId);
