@@ -70,24 +70,6 @@ jobs:
             cd github-email
             npm install
 
-      - name: Email Body
+      - name: Email
         id: get_body
         run: node ./github-email/.github/scripts/get-stale-projects.js query.txt
-
-      - name: Send notification email
-        uses: dawidd6/action-send-mail@v2
-        with:
-          # mail server settings
-          server_address: smtp.gmail.com
-          server_port: 465
-          # user credentials
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          # email subject
-          subject: Notification for ${{ github.repository }}
-          # email body as text
-          body: $body
-          # comma-separated string, send email to
-          to: ${{ inputs.to }}
-          # from email name
-          from: Your Friendly Neighborhood Spider-man
