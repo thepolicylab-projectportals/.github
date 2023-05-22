@@ -72,4 +72,4 @@ jobs:
 
       - name: Email
         id: get_body
-        run: node ./github-email/.github/scripts/get-stale-projects.js query.txt
+        run: to=${{inputs.to}} node ./github-email/.github/scripts/get-stale-projects.js query.txt

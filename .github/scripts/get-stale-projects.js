@@ -7,8 +7,8 @@ const { JSDOM } = jsdom;
 const { document } = (new JSDOM(`...`)).window;
 
 async function main() {
-
-    const to = core.getInput(to);
+    const to = core.getInput(to, {required: false});
+    console.log(to);
     const arg = argv.slice(2);
     const file = arg[0];
     const query = JSON.parse(fs.readFileSync(file, {encoding:'utf8', flag:'r'}));
