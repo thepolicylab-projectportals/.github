@@ -8,6 +8,8 @@ const { document } = (new JSDOM(`...`)).window;
 
 async function main() {
     let to = core.getInput('to', {required: false});
+    const site = core.getInput('site', {required: true});
+
     console.log(to);
     if (!to) {
         core.warning('to value was not set');
@@ -68,17 +70,17 @@ async function main() {
                 addElement(`Project Title: ${query.data.allProject.nodes[i].title}`, projectDiv);
                 addElement(`Contact Name: ${query.data.allProject.nodes[i].mainContact.name}`, projectDiv);
                 addElement(`Contact Email: ${query.data.allProject.nodes[i].mainContact.email}`, projectDiv);
-                addElement(`URL: ${query.data.allProject.nodes[i].slug}`, projectDiv);
-                addElement(`Possible Problems: ${problems.join('; ')}`, projectDiv);
+                addElement(`URL: ${site}/${query.data.allProject.nodes[i].slug}`, projectDiv);
+                addElement(`Possible Problems: ${problems.join(' ')}`, projectDiv);
                 projectDiv.append(document.createElement("br"));
                 numberStales++;
             }
 
         }
 
-        addElement("Please reach out to the appropriate contacts for the following projects and update these projects within their respective CMS sites.", endingDiv);
         addElement("Hello!", greetingDiv);
-        addElement("The following projects may be out of date: ", greetingDiv);
+        greetingDiv.append(document.createElement("br"));
+        addElement("Please reach out to the appropriate contacts for the following projects and confirm that the information within its CMS site is not out-of-date.", greetingDiv);
 
         if (numberStales > 0) {
 
@@ -100,7 +102,7 @@ async function main() {
 
             // send mail with defined transport object
             let info = await transporter.sendMail({
-                from: '"Fred Foo 👻" <foo@example.com>', // sender address
+                from: '"Brown Policy Lab" <no-reply@brown.edu>', // sender address
                 to: to, // list of receivers
                 subject: "Hello ✔", // Subject line
                 html: `${greetingDiv.outerHTML}${projectDiv.outerHTML}${endingDiv.outerHTML}`, // html body

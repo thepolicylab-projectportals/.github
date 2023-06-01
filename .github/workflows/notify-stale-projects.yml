@@ -3,9 +3,15 @@ name: Get email body for stale projects
 on:
   workflow_call:
     inputs:
+      site:
+        type: string
+        default: ""
       to:
         type: string
         default: "heather_yu@brown.edu"
+      email-type:
+        type: string
+        default: "stale"
 
 permissions:
   contents: read
@@ -15,7 +21,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-20.04
-
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
@@ -70,5 +75,6 @@ jobs:
             cd github-email
             npm install
 
-      - name: Email
-        run: node ./github-email/.github/scripts/get-stale-projects.js query.txt
+      - name: Email Stale Projects
+        if: ${{ inputs.email-type }} == 'stale'
+        run: node ./github-email/.github/scripts/send-stale-project-email.js query.txt
