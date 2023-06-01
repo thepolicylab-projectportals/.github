@@ -7,18 +7,19 @@ const { JSDOM } = jsdom;
 const { document } = (new JSDOM(`...`)).window;
 
 async function main() {
-    let to = core.getInput('to', {required: false});
-    const site = core.getInput('site', {required: true});
-
-    console.log(to);
-    if (!to) {
-        core.warning('to value was not set');
-        to = "heather_yu@brown.edu";
-    }
     const arg = argv.slice(2);
     const file = arg[0];
     const query = JSON.parse(fs.readFileSync(file, {encoding:'utf8', flag:'r'}));
     console.log(query);
+    let inputs = arg[1];
+    let to = inputs.to;
+    let site = inputs.site;
+
+    console.log(to, site);
+    if (!to) {
+        core.warning('to value was not set');
+        to = "heather_yu@brown.edu";
+    }
 
     try {
         const today = new Date();

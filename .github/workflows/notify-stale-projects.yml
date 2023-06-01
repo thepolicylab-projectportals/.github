@@ -77,4 +77,6 @@ jobs:
 
       - name: Email Stale Projects
         if: ${{ inputs.email-type }} == 'stale'
-        run: node ./github-email/.github/scripts/send-stale-project-email.js query.txt
+        run: |
+          const inputs = ${{ toJSON(inputs) }}
+          node ./github-email/.github/scripts/send-stale-project-email.js query.txt inputs
