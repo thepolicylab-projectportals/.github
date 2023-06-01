@@ -10,12 +10,11 @@ async function main() {
     const arg = argv.slice(2);
     const file = arg[0];
     const query = JSON.parse(fs.readFileSync(file, {encoding:'utf8', flag:'r'}));
-    console.log(query);
     let inputs = JSON.parse(arg[1]);
+
     let to = inputs.to;
     let site = inputs.site;
 
-    console.log(to, site);
     if (!to) {
         core.warning('to value was not set');
         to = "heather_yu@brown.edu";
@@ -35,8 +34,6 @@ async function main() {
             let startDate = Date.parse(query.data.allProject.nodes[i].startDate);
             let endDate = Date.parse(query.data.allProject.nodes[i].endDate);
             let modifyDate = Date.parse(query.data.allProject.nodes[i].lastModified);
-            console.log(`Status: ${status}
-            closeDate: ${closeDate}`);
 
             let problems = [];
 
@@ -82,7 +79,8 @@ async function main() {
         addElement("Hello!", greetingDiv);
         greetingDiv.append(document.createElement("br"));
         addElement("Please reach out to the appropriate contacts for the following projects and confirm that the information within its CMS site is not out-of-date.", greetingDiv);
-
+        greetingDiv.append(document.createElement("br"));
+        
         if (numberStales > 0) {
 
             // Send out an email

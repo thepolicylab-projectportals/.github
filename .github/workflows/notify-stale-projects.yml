@@ -53,11 +53,11 @@ jobs:
         run: yarn develop & npx wait-on http://localhost:8000
 
       - run: |
-            curl 'http://localhost:8000/___graphql' \
-            -X POST \
-            -H 'content-type: application/json' \
-            --data '{"query": "query { allProject { nodes { id, title, slug, status, opportunityCloses, endDate, startDate, lastModified, mainContact { name, email }  } } }"}' \
-            --verbose > query.txt
+          curl 'http://localhost:8000/___graphql' \
+          -X POST \
+          -H 'content-type: application/json' \
+          --data '{"query": "query { allProject { nodes { id, title, slug, status, opportunityCloses, endDate, startDate, lastModified, mainContact { name, email }  } } }"}' \
+          --verbose > query.txt
         id: get_projects
 
       - run: cat query.txt
@@ -77,7 +77,4 @@ jobs:
 
       - name: Email Stale Projects
         if: ${{ inputs.email-type }} == 'stale'
-        run: |
-          INPUTS='${{ toJSON(inputs) }}'
-          echo $INPUTS
-          node ./github-email/.github/scripts/send-stale-project-email.js query.txt $INPUTS
+        run: node ./github-email/.github/scripts/send-stale-project-email.js query.txt '${{ toJSON(inputs) }}'
