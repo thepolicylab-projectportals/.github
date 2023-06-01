@@ -11,7 +11,7 @@ async function main() {
     const file = arg[0];
     const query = JSON.parse(fs.readFileSync(file, {encoding:'utf8', flag:'r'}));
     console.log(query);
-    let inputs = arg[1];
+    let inputs = JSON.parse(arg[1]);
     let to = inputs.to;
     let site = inputs.site;
 
