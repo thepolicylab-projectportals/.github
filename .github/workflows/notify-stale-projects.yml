@@ -11,7 +11,7 @@ on:
         default: "heather_yu@brown.edu"
       email-type:
         type: string
-        default: "stale"
+        default: "test"
 
 permissions:
   contents: read
@@ -76,5 +76,4 @@ jobs:
             npm install
 
       - name: Email Stale Projects
-        if: ${{ inputs.email-type }} == 'stale'
         run: node ./github-email/.github/scripts/send-stale-project-email.js query.txt '${{ toJSON(inputs) }}'

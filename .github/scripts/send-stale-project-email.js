@@ -80,24 +80,35 @@ async function main() {
         greetingDiv.append(document.createElement("br"));
         addElement("Please reach out to the appropriate contacts for the following projects and confirm that the information within its CMS site is not out-of-date.", greetingDiv);
         greetingDiv.append(document.createElement("br"));
-        
+
         if (numberStales > 0) {
 
             // Send out an email
-            // Generate test SMTP service account from ethereal.email
-            // Only needed if you don't have a real mail account for testing
-            let testAccount = await nodemailer.createTestAccount();
+            let EMAIL_SMTP = "smtp://mail-relay.brown.edu:25";
+            let transporter;
+            if (inputs.emailtype == "test") {
+                EMAIL_SMTP = undefined;
+            }
+            // Generate test SMTP service account
+            if (EMAIL_SMTP !== undefined) {
+                transporter = nodemailer.createTransport(EMAIL_SMTP);
+                console.debug("initialized smtp server: %s", EMAIL_SMTP);
+            } else {
+                let testAccount = await nodemailer.createTestAccount();
+                transporter = nodemailer.createTransport({
+                    host: "smtp.ethereal.email",
+                    port: 587,
+                    secure: false, // true for 465, false for other ports
+                    auth: {
+                        user: testAccount.user, // generated ethereal user
+                        pass: testAccount.pass, // generated ethereal password
+                    },
+                });
+                console.debug("initialized ethereal email smtp server");
+            }
 
-            // create reusable transporter object using the default SMTP transport
-            let transporter = nodemailer.createTransport({
-                host: "smtp.ethereal.email",
-                port: 587,
-                secure: false, // true for 465, false for other ports
-                auth: {
-                    user: testAccount.user, // generated ethereal user
-                    pass: testAccount.pass, // generated ethereal password
-                },
-            });
+            console.debug("initialized smtp server: %s", EMAIL_SMTP);
+
 
             // send mail with defined transport object
             let info = await transporter.sendMail({
