@@ -84,6 +84,8 @@ async function main() {
         if (numberStales > 0) {
 
             // Send out an email
+            // This smtp was set up by Brown OIT unix team -- this will only work on Brown internal network (such as BKE)
+            // Auth not needed at this time
             let EMAIL_SMTP = "smtp://mail-relay.brown.edu:25";
             let transporter;
             if (inputs.emailtype == "test") {
@@ -114,7 +116,7 @@ async function main() {
             let info = await transporter.sendMail({
                 from: '"Brown Policy Lab" <no-reply@brown.edu>', // sender address
                 to: to, // list of receivers
-                subject: "Hello ✔", // Subject line
+                subject: "Project Portal Update: Out of Date Projects", // Subject line
                 html: `${greetingDiv.outerHTML}${projectDiv.outerHTML}${endingDiv.outerHTML}`, // html body
             });
 
