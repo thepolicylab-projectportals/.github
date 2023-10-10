@@ -21,6 +21,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install headless-chrome
+        run: sudo apt-get install chromium-browser -y
+    
       - name: Checkout source
         uses: actions/checkout@v3
 
